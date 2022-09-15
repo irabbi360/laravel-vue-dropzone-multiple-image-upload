@@ -5323,6 +5323,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -5335,7 +5349,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       sendSuccess: false,
       title: "",
       body: "",
-      articles: [],
+      article: {},
+      uploadResponse: {},
       dropzoneOptions: {
         url: '/store-multiple-image',
         headers: {
@@ -5352,7 +5367,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   mounted: function mounted() {
     console.log('Component mounted.');
-    this.getAllArticle();
   },
   methods: {
     afterUploadComplete: function () {
@@ -5363,6 +5377,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 0:
                 if (response.status == "success") {
                   console.log("upload successful");
+                  this.uploadResponse = JSON.parse(response.xhr.response);
+                  this.getArticle();
                   this.sendSuccess = true;
                 } else {
                   console.log("upload failed");
@@ -5383,7 +5399,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       return afterUploadComplete;
     }(),
     saveArticleData: function () {
-      var _saveArticleData = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
+      var _saveArticleData = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2(props) {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
@@ -5398,7 +5414,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee2, this);
       }));
 
-      function saveArticleData() {
+      function saveArticleData(_x2) {
         return _saveArticleData.apply(this, arguments);
       }
 
@@ -5421,17 +5437,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee3, this);
       }));
 
-      function sendArticle(_x2, _x3, _x4) {
+      function sendArticle(_x3, _x4, _x5) {
         return _sendArticle.apply(this, arguments);
       }
 
       return sendArticle;
     }(),
-    getAllArticle: function getAllArticle() {
+    getArticle: function getArticle() {
       var _this = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_1___default().get('/articles').then(function (res) {
-        _this.articles = res.data;
+      axios__WEBPACK_IMPORTED_MODULE_1___default().get('/article/' + this.uploadResponse.data.id).then(function (res) {
+        _this.article = res.data;
       });
     }
   }
@@ -29310,6 +29326,39 @@ var render = function () {
             ]),
           ]),
         ]),
+        _vm._v(" "),
+        _vm.sendSuccess
+          ? _c("div", { staticClass: "card" }, [
+              _c("div", { staticClass: "card-header" }, [
+                _vm._v(_vm._s(_vm.article.title)),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "card-body" }, [
+                _c(
+                  "div",
+                  { staticClass: "text-center" },
+                  [
+                    _vm._l(_vm.article.article_image, function (file) {
+                      return [
+                        _c("img", {
+                          staticClass: "rounded img-thumbnail",
+                          attrs: {
+                            src: "/images/" + file.image.url,
+                            alt: "...",
+                          },
+                        }),
+                      ]
+                    }),
+                  ],
+                  2
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "mt-3" }, [
+                  _c("p", [_vm._v(_vm._s(_vm.article.body))]),
+                ]),
+              ]),
+            ])
+          : _vm._e(),
       ]),
     ]),
   ])

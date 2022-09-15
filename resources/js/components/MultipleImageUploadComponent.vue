@@ -25,6 +25,20 @@
                             </button>
                         </div>
                     </div>
+
+                </div>
+                <div v-if="sendSuccess" class="card">
+                    <div class="card-header">{{ article.title }}</div>
+                    <div class="card-body">
+                        <div class="text-center">
+                            <template v-for="file in article.article_image">
+                                <img :src="'/images/' + file.image.url" class="rounded img-thumbnail" alt="..." />
+                            </template>
+                        </div>
+                        <div class="mt-3">
+                            <p>{{ article.body }}</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -46,7 +60,8 @@ export default {
             sendSuccess: false,
             title: "",
             body: "",
-            articles: [],
+            article: {},
+            uploadResponse: {},
             dropzoneOptions: {
                 url: '/store-multiple-image',
                 headers: {
@@ -63,27 +78,28 @@ export default {
     },
     mounted() {
         console.log('Component mounted.')
-        this.getAllArticle()
     },
     methods: {
         afterUploadComplete: async function (response) {
             if (response.status == "success") {
                 console.log("upload successful");
+                this.uploadResponse = JSON.parse(response.xhr.response);
+                this.getArticle()
                 this.sendSuccess = true;
             } else {
                 console.log("upload failed");
             }
         },
-        saveArticleData: async function () {
+        saveArticleData: async function (props) {
             this.$refs.myVueDropzone.processQueue();
         },
         sendArticle: async function (files, xhr, formData) {
             formData.append("title", this.title);
             formData.append("body", this.body);
         },
-        getAllArticle(){
-            axios.get('/articles').then((res) => {
-                this.articles = res.data
+        getArticle(){
+            axios.get('/article/' + this.uploadResponse.data.id).then((res) => {
+                this.article = res.data
             })
         }
     },
