@@ -82,7 +82,9 @@ export default {
     methods: {
         afterUploadComplete: async function (response) {
             if (response.status == "success") {
-                console.log("upload successful");
+                this.title =  "",
+                this.body = "",
+                this.$refs.myVueDropzone.removeAllFiles();
                 this.uploadResponse = JSON.parse(response.xhr.response);
                 this.getArticle();
                 this.sendSuccess = true;

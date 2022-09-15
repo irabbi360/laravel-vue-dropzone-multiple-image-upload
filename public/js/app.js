@@ -5365,7 +5365,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 if (response.status == "success") {
-                  console.log("upload successful");
+                  this.title = "", this.body = "", this.$refs.myVueDropzone.removeAllFiles();
                   this.uploadResponse = JSON.parse(response.xhr.response);
                   this.getArticle();
                   this.sendSuccess = true;
