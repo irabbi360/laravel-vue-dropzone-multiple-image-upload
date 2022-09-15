@@ -27,7 +27,7 @@
                     </div>
 
                 </div>
-                <div v-if="sendSuccess" class="card">
+                <div v-for="article in articles" :key="article.id" class="card mt-3">
                     <div class="card-header">{{ article.title }}</div>
                     <div class="card-body">
                         <div class="text-center">
@@ -60,7 +60,7 @@ export default {
             sendSuccess: false,
             title: "",
             body: "",
-            article: {},
+            articles: [],
             uploadResponse: {},
             dropzoneOptions: {
                 url: '/store-multiple-image',
@@ -77,14 +77,14 @@ export default {
         }
     },
     mounted() {
-        console.log('Component mounted.')
+        this.getArticle();
     },
     methods: {
         afterUploadComplete: async function (response) {
             if (response.status == "success") {
                 console.log("upload successful");
                 this.uploadResponse = JSON.parse(response.xhr.response);
-                this.getArticle()
+                this.getArticle();
                 this.sendSuccess = true;
             } else {
                 console.log("upload failed");
@@ -98,8 +98,8 @@ export default {
             formData.append("body", this.body);
         },
         getArticle(){
-            axios.get('/article/' + this.uploadResponse.data.id).then((res) => {
-                this.article = res.data
+            axios.get('/get-articles').then((res) => {
+                this.articles = res.data
             })
         }
     },

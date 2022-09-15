@@ -29,7 +29,7 @@ class ImageController extends Controller
                     $files[] = $name;
                 }
             }
-            
+
             $imagesID = [];
 
             foreach($files as $file){
@@ -39,7 +39,7 @@ class ImageController extends Controller
 
                 $imagesID[] = ['article_id' => $article->id, 'image_id' => $image->id];
             }
-            
+
             DB::table('article_images')->insert($imagesID);
             // Image::insert($files);
 
@@ -51,15 +51,15 @@ class ImageController extends Controller
 
     public function getAllArticles()
     {
-        $articles = Article::get();
-        
+        $articles = Article::with('articleImage','articleImage.image')->latest()->get();
+
         return $articles;
     }
 
     public function getArticle($id)
     {
         $article = Article::with('articleImage','articleImage.image')->find($id);
-        
+
         return $article;
     }
 }
