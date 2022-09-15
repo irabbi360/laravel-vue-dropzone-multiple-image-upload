@@ -49,6 +49,13 @@ class ImageController extends Controller
         return response()->json(['message'=>'error article create fail!'], 503);
     }
 
+    public function getAllArticles()
+    {
+        $articles = Article::get();
+        
+        return $articles;
+    }
+
     public function getArticle($id)
     {
         $article = Article::with('articleImage','articleImage.image')->find($id);

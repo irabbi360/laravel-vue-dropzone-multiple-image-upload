@@ -21,4 +21,5 @@ Route::get('/', function () {
 	
 //all events
 Route::post('store-multiple-image', 'App\Http\Controllers\ImageController@store');
+Route::get('articles', 'App\Http\Controllers\ImageController@getAllArticles');
 Route::get('article/{id}', 'App\Http\Controllers\ImageController@getArticle');

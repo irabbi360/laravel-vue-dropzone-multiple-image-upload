@@ -33,6 +33,7 @@
 
 <script>
 
+import axios from 'axios'
 import vue2Dropzone from 'vue2-dropzone'
 import 'vue2-dropzone/dist/vue2Dropzone.min.css'
 
@@ -45,6 +46,7 @@ export default {
             sendSuccess: false,
             title: "",
             body: "",
+            articles: [],
             dropzoneOptions: {
                 url: '/store-multiple-image',
                 headers: {
@@ -61,6 +63,7 @@ export default {
     },
     mounted() {
         console.log('Component mounted.')
+        this.getAllArticle()
     },
     methods: {
         afterUploadComplete: async function (response) {
@@ -78,6 +81,11 @@ export default {
             formData.append("title", this.title);
             formData.append("body", this.body);
         },
+        getAllArticle(){
+            axios.get('/articles').then((res) => {
+                this.articles = res.data
+            })
+        }
     },
 }
 </script>
